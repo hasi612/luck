@@ -1,0 +1,16 @@
+#backBtn {
+  position: fixed;
+  top: 480px;
+  left: 90px;
+  padding: 8px 14px;
+  font-size: 0.8rem;
+  background-color: rgba(123, 88, 214, 0.4);
+  color: white;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  box-shadow: 0 0 8px #916fe8;
+  z-index: 30;
+  user-select: none;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
