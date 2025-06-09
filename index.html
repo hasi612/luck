@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+  
   <meta charset="UTF-8" />
   <title>별의 운세 심리테스트</title>
   <style>
@@ -241,7 +242,21 @@
       margin-right: 10px;
       filter: drop-shadow(0 0 2px #9b8fff);
     }
-
+#result-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+    #result-wrapper {
+  position: absolute;
+  top: 47%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 500px;
+  z-index: 10;
+}
   </style>
 </head>
 <body>
@@ -261,24 +276,33 @@
     <h1>운세 테스트에 오신 것을 환영합니다!</h1>
     <!-- 운세 테스트 UI를 여기 넣으면 됨 -->
 
-  <!-- 반짝이는 별들 캔버스 -->
+  <!-- 반짝이는 별 캔버스 -->
   <canvas id="stars"></canvas>
 
-  <!-- 표지 -->
+ <!-- 표지 -->
   <div class="card" id="intro">
     <h2>🌌 오늘의 별 운세</h2>
     <p>은하수 아래 펼쳐지는<br>나만의 신비로운 운세를 만나보세요</p>
     <button onclick="startTest()">운세 보러 가기</button>
   </div>
 
-  <!-- 질문 카드 -->
+<!-- 질문카드 -->
   <div class="card hidden" id="question"></div>
 
-    <!-- 뒤로가기 카드 -->
-    <button id="backBtn" class="back-btn hidden">뒤로가기</button>
+    <!-- 진행도 바 -->
+    <div id="progress-container">
+  <div id="progress-bar"></div>
+  <div id="progress-text">1 / 5</div>
+</div>
+
 
   <!-- 결과 카드 -->
-  <div class="card hidden" id="result"></div>
+ <div id="result-wrapper" class="hidden">
+  <div class="card" id="result"></div>
+</div>
+    
+
+  
 
   <script>
     const curtainLeft = document.getElementById('curtainLeft');
@@ -372,52 +396,52 @@
     initStars();
     drawStars();
 
-    /* --- 기존 운세 테스트 스크립트 --- */
+    /* — 기존 운세 테스트 스크립트 — */
 
     const questions = [
       {
         question: "당신은 현재 꿈을 꾸고 있습니다. <br> 꿈속에서 걷고 있는 곳은?",
         choices: [
-          { text: "고요한 호수", img: "https://img.icons8.com/ios-filled/50/ffffff/lake.png" },
-          { text: "은하수 밤하늘", img: "https://img.icons8.com/ios-filled/50/ffffff/galaxy.png" },
-          { text: "안개 낀 숲", img: "https://img.icons8.com/ios-filled/50/ffffff/forest.png" },
+          { text: "고요한 호수 옆", img: "https://img.icons8.com/ios-filled/50/ffffff/lake.png" },
+          { text: "별빛 은하수 밑", img: "https://img.icons8.com/ios-filled/50/ffffff/galaxy.png" },
+          { text: "안개가 낀 숲속", img: "https://img.icons8.com/ios-filled/50/ffffff/forest.png" },
           { text: "불빛 흐린 도시", img: "https://img.icons8.com/ios-filled/50/ffffff/city.png" }
         ]
       },
       {
         question: "하늘에서 갑자기 쏟아진 것은?",
         choices: [
-          { text: "별똥별" },
-          { text: "은하수" },
-          { text: "돈다발" },
-          { text: "편지지" }
+          { text: "별똥별", img: "https://img.icons8.com/ios-filled/50/ffffff/comet.png" },
+          { text: "은하수", img: "https://img.icons8.com/ios-filled/50/ffffff/galaxy.png" },
+          { text: "돈다발", img: "https://img.icons8.com/ios-filled/50/ffffff/money-bag.png" },
+          { text: "편지지", img: "https://img.icons8.com/ios-filled/50/ffffff/mail.png" }
         ]
       },
       {
         question: "꿈속에서 만난 존재는?",
         choices: [
-          { text: "고양이" },
-          { text: "별" },
-          { text: "나무" },
-          { text: "시계" }
+          { text: "까마귀", img: "https://img.icons8.com/ios-filled/50/ffffff/crow.png" },
+          { text: "눈사람", img: "https://img.icons8.com/ios-filled/50/ffffff/snowman.png" },
+          { text: "간호사", img: "https://img.icons8.com/ios-filled/50/ffffff/nurse-female.png" },
+          { text: "강아지", img: "https://img.icons8.com/ios-filled/50/ffffff/dog.png" }
         ]
       },
       {
         question: "그 존재가 건넨 말은?",
         choices: [
-          { text: "깨어나면 잊게 될 것이다" },
-          { text: "이건 단지 시작일 뿐" },
-          { text: "모든 선택은 너의 것이야" },
-          { text: "넌 이미 알고 있어" }
+          { text: "깨어나면 다 잊게 될 거야" },
+          { text: "이건 시작에 불과한 거야" },
+          { text: "넌 이미 모든 걸 알고 있어" },
+          { text: "무엇이든 네가 정할 거야" }
         ]
       },
       {
         question: "당신이 마지막으로 떠오른 감정은?",
         choices: [
-          { text: "설명할 수 없는 편안함" },
-          { text: "아련한 그리움" },
-          { text: "미묘한 두려움" },
-          { text: "벅찬 설렘" }
+          { text: "편안함" },
+          { text: "그리움" },
+          { text: "두려움" },
+          { text: "기대감" }
         ]
       },
     ];
@@ -428,28 +452,28 @@
         text: "당신은 신비로운 직관을 가진 별빛 타입! 오늘은 감에 의존해도 좋은 날이에요.",
         item: "🔮 아메시스트 목걸이",
         mood: "✨ 예민하지만 직관력이 날카로워요",
-        background: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee"
+        background: "https://i.imgur.com/BNhXaYm.jpeg"
       },
       {
         type: "달빛 타입",
         text: "당신은 고요한 에너지를 품은 달빛 타입! 휴식이 큰 힘을 줄 거예요.",
         item: "🌙 따뜻한 허브티",
         mood: "😌 마음이 차분해지고 감성이 올라와요",
-        background: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e"
+        background: "https://i.imgur.com/hovbcO2.jpeg"
       },
       {
         type: "별의 안내자 타입",
         text: "당신은 현실을 꿰뚫는 별의 안내자 타입! 계획적으로 움직여보세요.",
         item: "📓 깔끔한 다이어리",
         mood: "🧠 이성적이고 분석적인 에너지가 강해요",
-        background: "https://images.unsplash.com/photo-1603228258579-65efb42f4b52"
+        background: "https://i.imgur.com/yMGsBdL.jpeg"
       },
       {
         type: "몽환가 타입",
         text: "당신은 감성적인 몽환가 타입! 예술적 영감이 솟을 수 있어요.",
         item: "🎨 빈 스케치북",
         mood: "🌫️ 현실보단 꿈결 같은 느낌이 드는 하루",
-        background: "https://images.unsplash.com/photo-1603702713440-e89f281e34a1"
+        background: "https://i.imgur.com/IiZsKhQ.jpeg"
       }
     ];
 
@@ -490,6 +514,7 @@
 
     function showResult() {
       
+      document.getElementById('result-wrapper').classList.remove('hidden');
       document.getElementById('question').classList.add('hidden');
       const result = document.getElementById('result');
       const score = answers.reduce((a, b) => a + b, 0);
@@ -500,17 +525,28 @@
       document.body.style.backgroundSize = 'cover';
 
       result.innerHTML = `
-        <h3>🌟 당신은 ${data.type}</h3>
-        <div class="result-box"><strong>🔮 운세:</strong> ${data.text}</div>
-        <div class="result-box"><strong>😊 오늘의 기분:</strong> ${data.mood}</div>
-        <div class="result-box"><strong>🎁 행운 아이템:</strong> ${data.item}</div>
-        <button onclick="shareResult()" class="share-btn">트위터로 공유하기</button>
-        <button onclick="restartTest()">다시 하기</button>
-      `;
+  <h3>🌟 당신은 ${data.type}</h3>
+  <div id="result-image" style="
+    background-image: url(${data.background});
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 400px;
+
+  "></div>
+  <div class="result-box"><strong>🔮 운세:</strong> ${data.text}</div>
+  <div class="result-box"><strong>😊 오늘의 기분:</strong> ${data.mood}</div>
+  <div class="result-box"><strong>🎁 행운 아이템:</strong> ${data.item}</div>
+  <button onclick="shareResult()" class="share-btn">트위터로 공유하기</button>
+  <button onclick="restartTest()">다시 하기</button>
+`;
+
       result.classList.remove('hidden');
     }
 
     function restartTest() {
+      document.getElementById('result-wrapper').classList.add('hidden');
+
       document.body.style.background = '#0b0c1a'; // 기본 은하수 배경 복원
       document.getElementById('result').classList.add('hidden');
       document.getElementById('intro').classList.remove('hidden');
@@ -555,6 +591,8 @@ backBtn.addEventListener('click', () => {
 
 
   </script>
+<script defer src="script.js"></script>
+    
 
 </body>
 </html>
