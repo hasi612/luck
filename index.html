@@ -3,7 +3,8 @@
 <head>
   
   <meta charset="UTF-8" />
-  <title>별의 운세 심리테스트</title>
+  <title>별의  심리테스트</title>
+  
   <style>
     body, html {
     margin: 0; padding: 0; height: 100%;
@@ -396,7 +397,7 @@
     initStars();
     drawStars();
 
-    /* — 기존 운세 테스트 스크립트 — */
+    /* —  운세 테스트 스크립트 — */
 
     const questions = [
       {
@@ -591,7 +592,25 @@ backBtn.addEventListener('click', () => {
 
 
   </script>
-<script defer src="script.js"></script>
+<script>
+  document.getElementById("startButton").addEventListener("click", function () {
+    fetch("https://docs.google.com/spreadsheets/d/1QA_1MTbfjYHSeM9Bq72BQvt3z6Pqt4sfGp6kI22PVC4/edit?usp=sharing", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: "status=눌렀음"
+    });
+    function doPost(e) {
+  var ss = SpreadsheetApp.openById("스프레드시트-ID"); // B의 ID 입력
+  var sheet = ss.getSheetByName("시트1");
+  var value = e.parameter.status;
+
+  if (value) {
+    sheet.appendRow([value]);
+  }
+
+  return ContentService.createTextOutput("Success");
+}
+
     
 
 </body>
